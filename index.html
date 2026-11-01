@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#17152b">
+  <title>MyDiary — Your story, your space</title>
+  <style>
+    :root{--bg:#f5f4fa;--card:#fff;--text:#24213a;--muted:#77748b;--line:#e9e6f1;--accent:#7257d8;--accent2:#9179ed;--soft:#f0ecff;--danger:#c94c62;--shadow:0 14px 40px rgba(43,34,80,.08)}
+    body.dark{--bg:#12111b;--card:#1d1b29;--text:#f4f1ff;--muted:#aaa5bd;--line:#302d40;--soft:#2b2544;--shadow:0 14px 40px rgba(0,0,0,.2)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;transition:.2s}
+    button,input,textarea{font:inherit}button{cursor:pointer}
+    .hidden{display:none!important}.wrap{max-width:1120px;margin:auto;padding:24px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:21px;letter-spacing:-.5px}.mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#7358dc,#a38df5);display:grid;place-items:center;color:white;font-size:21px;box-shadow:0 8px 18px #7358dc35}
+    .muted{color:var(--muted)}.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:650;transition:.18s}.primary{background:var(--accent);color:white}.primary:hover{background:#6045c6;transform:translateY(-1px)}.ghost{background:var(--soft);color:var(--accent)}.outline{background:var(--card);border:1px solid var(--line);color:var(--text)}.danger{background:#fff0f2;color:var(--danger)}
+    .iconbtn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+    .login{min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 15% 15%,#e5ddff 0,transparent 32%),radial-gradient(circle at 85% 80%,#e8e2ff 0,transparent 30%),var(--bg)}
+    body.dark .login{background:radial-gradient(circle at 15% 15%,#282144 0,transparent 32%),radial-gradient(circle at 85% 80%,#25203a 0,transparent 30%),var(--bg)}
+    .login-card{width:min(100%,460px);background:var(--card);border:1px solid var(--line);border-radius:26px;padding:38px;box-shadow:var(--shadow);text-align:center}
+    .login-card .mark{margin:0 auto 18px;width:58px;height:58px;font-size:27px}.login-card h1{font-size:32px;margin:8px 0}.login-card p{line-height:1.65;color:var(--muted)}
+    .google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;margin-top:24px;background:var(--card);border:1px solid var(--line);color:var(--text);padding:14px;border-radius:13px;font-weight:700}.google img{width:19px}
+    .privacy{font-size:12px;margin-top:20px!important}
+    .hero{background:linear-gradient(120deg,#30245f,#7159c9 68%,#917be4);color:white;border-radius:23px;padding:28px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:var(--shadow);margin-bottom:24px}.hero h1{margin:0 0 8px;font-size:clamp(24px,4vw,34px)}.hero p{margin:0;color:#e7e0ff}.hero .date{text-align:right;color:#eee9ff;font-size:14px;white-space:nowrap}
+    .layout{display:grid;grid-template-columns:1.5fr .8fr;gap:22px}.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow)}.panelhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}.panelhead h2{font-size:18px;margin:0}
+    .entry-form{display:grid;gap:12px}.field{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);outline:none}.field:focus{border-color:var(--accent);box-shadow:0 0 0 3px #7257d81a}textarea.field{min-height:150px;resize:vertical;line-height:1.6}.formrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.formrow .field{flex:1;min-width:180px}
+    .entries{display:grid;gap:12px}.entry{border:1px solid var(--line);border-radius:15px;padding:16px;background:var(--card)}.entry h3{margin:0 0 7px;font-size:16px}.entry p{margin:0;color:var(--muted);line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.entrymeta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:13px;font-size:12px;color:var(--muted)}.entryactions{display:flex;gap:7px}.smallbtn{border:0;border-radius:9px;padding:7px 10px;background:var(--soft);color:var(--accent);font-size:12px;font-weight:650}
+    .empty{text-align:center;padding:30px 12px;color:var(--muted)}.empty .emoji{font-size:32px;margin-bottom:8px}.stat{padding:16px;border-radius:15px;background:var(--soft);margin-bottom:12px}.stat strong{display:block;font-size:25px;color:var(--accent)}.stat span{font-size:13px;color:var(--muted)}.tip{font-size:13px;line-height:1.6;color:var(--muted)}
+    .user{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;background:var(--soft)}.usertext{font-size:13px}.usertext strong{display:block;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#262238;color:white;padding:12px 18px;border-radius:12px;box-shadow:var(--shadow);z-index:10;font-size:14px;max-width:90%;text-align:center}
+    .footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
+    @media(max-width:760px){.wrap{padding:16px}.layout{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.hero .date{text-align:left}.login-card{padding:28px 22px}.top{flex-wrap:wrap}.usertext{display:none}}
+  </style>
+</head>
+<body>
+  <section id="loginView" class="login">
+    <div class="login-card">
+      <div class="mark">✎</div>
+      <div class="brand" style="justify-content:center">MYDIARY</div>
+      <h1>Your story, your space.</h1>
+      <p>A private place to write down your thoughts, keep memories and look back on the moments that matter.</p>
+      <button id="googleLogin" class="google"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""> Continue with Google</button>
+      <p class="privacy">Your diary entries are private to your account. Sign in to begin.</p>
+      <p id="loginError" class="muted" style="font-size:13px"></p>
+    </div>
+  </section>
+
+  <main id="appView" class="hidden">
+    <div class="wrap">
+      <header class="top">
+        <div class="brand"><div class="mark">✎</div> MYDIARY</div>
+        <div class="formrow">
+          <button id="themeBtn" class="iconbtn" aria-label="Toggle theme">☾</button>
+          <div class="user"><img id="avatar" class="avatar" alt=""><div class="usertext"><strong id="userName"></strong><span id="userEmail" class="muted"></span></div></div>
+          <button id="signOut" class="btn outline">Sign out</button>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div><h1 id="welcome">Welcome back.</h1><p>Take a moment for yourself. Your thoughts belong here.</p></div>
+        <div class="date"><div id="todayLabel"></div><strong id="dateLabel"></strong></div>
+      </section>
+
+      <div class="layout">
+        <section class="panel">
+          <div class="panelhead"><h2 id="formHeading">Write a new entry</h2><span class="muted" style="font-size:12px">Just for you</span></div>
+          <form id="entryForm" class="entry-form">
+            <input id="entryTitle" class="field" maxlength="90" placeholder="Give your entry a title..." required>
+            <textarea id="entryBody" class="field" maxlength="12000" placeholder="What's on your mind today?" required></textarea>
+            <div class="formrow"><input id="entryDate" class="field" type="date" required><button id="saveEntry" class="btn primary" type="submit">Save entry</button><button id="cancelEdit" class="btn outline hidden" type="button">Cancel</button></div>
+          </form>
+        </section>
+
+        <aside class="panel">
+          <div class="panelhead"><h2>Your diary</h2></div>
+          <div class="stat"><strong id="entryCount">0</strong><span>Entries saved</span></div>
+          <div class="stat"><strong id="dayCount">0</strong><span>Different days written</span></div>
+          <p class="tip">A little note to yourself: you don't have to write perfectly. Just write honestly.</p>
+        </aside>
+      </div>
+
+      <section class="panel" style="margin-top:22px">
+        <div class="panelhead"><h2>Past entries</h2><input id="searchInput" class="field" style="max-width:260px;padding:9px 12px" placeholder="Search your diary..."></div>
+        <div id="entriesList" class="entries"><div class="empty"><div class="emoji">📖</div>Your diary is waiting for its first entry.</div></div>
+      </section>
+      <div class="footer">MYDIARY · A quiet place for your memories</div>
+    </div>
+  </main>
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAeoCOhensFdwy0azI2fu07H5qlTP0Me-I",
+      authDomain: "mydiary-project-8defb.firebaseapp.com",
+      projectId: "mydiary-project-8defb",
+      storageBucket: "mydiary-project-8defb.firebasestorage.app",
+      messagingSenderId: "324823851873",
+      appId: "1:324823851873:web:f9cd93a5d01296b25adb20",
+      measurementId: "G-2RX1WJ8KNW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+
+    const $ = id => document.getElementById(id);
+    let currentUser = null, entries = [], editingId = null;
+    const today = new Date().toLocaleDateString("en-CA");
+    $("entryDate").value = today;
+    $("todayLabel").textContent = new Date().toLocaleDateString(undefined,{weekday:"long"});
+    $("dateLabel").textContent = new Date().toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"});
+
+    function toast(message){$("toast").textContent=message;$("toast").classList.remove("hidden");setTimeout(()=>$("toast").classList.add("hidden"),3000)}
+    function safeText(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+    function entriesRef(){return collection(db,"users",currentUser.uid,"entries")}
+    function showApp(user){
+      currentUser=user;$("loginView").classList.add("hidden");$("appView").classList.remove("hidden");
+      $("userName").textContent=user.displayName||"My account";$("userEmail").textContent=user.email||"";
+      $("welcome").textContent=`Welcome back, ${(user.displayName||"friend").split(" ")[0]}.`;
+      $("avatar").src=user.photoURL||"https://www.gravatar.com/avatar/?d=mp";
+      loadEntries();
+    }
+    async function loadEntries(){
+      $("entriesList").innerHTML='<div class="empty">Loading your diary...</div>';
+      try{
+        const q=query(entriesRef(),orderBy("entryDate","desc"));
+        const snap=await getDocs(q);
+        entries=snap.docs.map(d=>({id:d.id,...d.data()}));
+        renderEntries();
+      }catch(err){console.error(err);$("entriesList").innerHTML='<div class="empty">Could not load entries. Check your Firestore rules and internet connection.</div>';toast("Could not load your diary.")}
+    }
+    function renderEntries(){
+      const term=$("searchInput").value.trim().toLowerCase();
+      const filtered=entries.filter(e=>(e.title||"").toLowerCase().includes(term)||(e.body||"").toLowerCase().includes(term));
+      $("entryCount").textContent=entries.length;
+      $("dayCount").textContent=new Set(entries.map(e=>e.entryDate)).size;
+      if(!filtered.length){$("entriesList").innerHTML=`<div class="empty"><div class="emoji">${entries.length?"🔎":"📖"}</div>${entries.length?"No entries match your search.":"Your diary is waiting for its first entry."}</div>`;return}
+      $("entriesList").innerHTML=filtered.map(e=>`
+        <article class="entry">
+          <h3>${safeText(e.title)}</h3><p>${safeText(e.body)}</p>
+          <div class="entrymeta"><span>${safeText(e.entryDate||"")}</span><div class="entryactions"><button class="smallbtn" data-edit="${e.id}">Edit</button><button class="smallbtn" data-delete="${e.id}">Delete</button></div></div>
+        </article>`).join("");
+      document.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>startEdit(b.dataset.edit)));
+      document.querySelectorAll("[data-delete]").forEach(b=>b.addEventListener("click",()=>removeEntry(b.dataset.delete)));
+    }
+    function resetForm(){editingId=null;$("entryForm").reset();$("entryDate").value=today;$("formHeading").textContent="Write a new entry";$("saveEntry").textContent="Save entry";$("cancelEdit").classList.add("hidden")}
+    function startEdit(id){const e=entries.find(x=>x.id===id);if(!e)return;editingId=id;$("entryTitle").value=e.title||"";$("entryBody").value=e.body||"";$("entryDate").value=e.entryDate||today;$("formHeading").textContent="Edit your entry";$("saveEntry").textContent="Update entry";$("cancelEdit").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"})}
+    async function removeEntry(id){if(!confirm("Delete this diary entry? This cannot be undone."))return;try{await deleteDoc(doc(db,"users",currentUser.uid,"entries",id));entries=entries.filter(e=>e.id!==id);renderEntries();toast("Entry deleted.")}catch(e){console.error(e);toast("Could not delete entry.")}}
+    $("entryForm").addEventListener("submit",async ev=>{
+      ev.preventDefault();if(!currentUser)return;
+      const title=$("entryTitle").value.trim(),body=$("entryBody").value.trim(),entryDate=$("entryDate").value;
+      if(!title||!body||!entryDate)return;
+      $("saveEntry").disabled=true;$("saveEntry").textContent="Saving...";
+      try{
+        if(editingId){await updateDoc(doc(db,"users",currentUser.uid,"entries",editingId),{title,body,entryDate,updatedAt:serverTimestamp()});toast("Your entry was updated.")}
+        else{await addDoc(entriesRef(),{title,body,entryDate,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});toast("Your entry was saved.")}
+        resetForm();await loadEntries();
+      }catch(e){console.error(e);toast("Could not save. Check Firestore rules and try again.")}
+      finally{$("saveEntry").disabled=false;$("saveEntry").textContent=editingId?"Update entry":"Save entry"}
+    });
+    $("cancelEdit").addEventListener("click",resetForm);
+    $("searchInput").addEventListener("input",renderEntries);
+    $("googleLogin").addEventListener("click",async()=>{try{$("loginError").textContent="";await signInWithPopup(auth,provider)}catch(e){console.error(e);$("loginError").textContent=e.code==="auth/unauthorized-domain"?"This website domain is not authorised in Firebase. Add it under Authentication → Settings → Authorised domains.":(e.message||"Google sign-in failed.")}});
+    $("signOut").addEventListener("click",()=>signOut(auth));
+    $("themeBtn").addEventListener("click",()=>{document.body.classList.toggle("dark");localStorage.setItem("mydiary-theme",document.body.classList.contains("dark")?"dark":"light");$("themeBtn").textContent=document.body.classList.contains("dark")?"☀":"☾"});
+    if(localStorage.getItem("mydiary-theme")==="dark"){document.body.classList.add("dark");$("themeBtn").textContent="☀"}
+    onAuthStateChanged(auth,user=>{if(user)showApp(user);else{$("appView").classList.add("hidden");$("loginView").classList.remove("hidden");currentUser=null}});
+  </script>
+</body>
+</html>
